@@ -2,17 +2,8 @@ FROM mwader/static-ffmpeg:5.1.2 AS ffmpeg_image
 
 FROM  mcr.microsoft.com/devcontainers/python:0-3.9
 
-WORKDIR /workspaces/speech_refine_infra/wav2vec_lambda
-
 COPY --from=ffmpeg_image /ffmpeg /usr/local/bin/
-
-RUN pip install --no-cache-dir torch==1.8.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
 COPY . .
 
-ARG TRANSFORMERS_CACHE=./model
-ENV TRANSFORMERS_CACHE=./model
-
 RUN pip install -r requirements.txt
-
-RUN pip install pytest pytest-xdist
